@@ -181,9 +181,18 @@ else
     sleep 4
 
     # Disable local nginx instance
-    # systemctl stop nginx
-    # systemctl disable nginx
-    
+    if lsof -i:80 >/dev/null ; then
+        STATUS=`systemctl is-active nginx`
+        if [[ ${STATUS} == 'active' ]]; then
+            systemctl stop nginx
+            systemctl disable nginx
+            echo "Your local NGinx server has been disabled, this was necessary in order to let the PSH Nginx server listen on that port."
+        else
+            echo "You have a server that is already listening on port 80. Please disable the server and run the script again."
+            exit 1
+        fi
+    fi
+
     # Start docker-compose now
     cd "$PSH_HOME_DIR/.docker-compose"
     rm -rf .env
