@@ -1,0 +1,31 @@
+{
+    "name": "Domain",
+    "base": "PersistedModel",
+    "idInjection": true,
+    "options": {
+        "validateUpsert": true
+    },
+    "properties": {
+        "value": {
+            "type": "string",
+            "required": true
+        },
+        "httpsEnabled": {
+            "type": "boolean",
+            "default": false
+        }
+    },
+    "validations": [],
+    "relations": {
+        "nginxConfigs": {
+            "type": "hasMany",
+            "model": "NginxConfig",
+            "foreignKey": "",
+            "options": {
+                "nestRemoting": true
+            }
+        }
+    },
+    "acls": [],
+    "methods": {}
+}

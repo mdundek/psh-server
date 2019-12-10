@@ -1,0 +1,32 @@
+{
+    "name": "NginxPresetParams",
+    "base": "PersistedModel",
+    "idInjection": true,
+    "options": {
+        "validateUpsert": true
+    },
+    "properties": {
+        "name": {
+            "type": "string",
+            "required": true
+        },
+        "list": {
+            "type": [
+                "string"
+            ]
+        }
+    },
+    "validations": [],
+    "relations": {
+        "nginxConfigs": {
+            "type": "hasMany",
+            "model": "NginxConfig",
+            "foreignKey": "",
+            "options": {
+                "nestRemoting": true
+            }
+        }
+    },
+    "acls": [],
+    "methods": {}
+}

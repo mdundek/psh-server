@@ -1,0 +1,74 @@
+{
+    "name": "Container",
+    "base": "PersistedModel",
+    "idInjection": true,
+    "options": {
+        "validateUpsert": true
+    },
+    "properties": {
+        "name": {
+            "type": "string",
+            "required": true
+        },
+        "command": {
+            "type": "string"
+        },
+        "user": {
+            "type": "string"
+        },
+        "workingDir": {
+            "type": "string"
+        },
+        "dependsOn": {
+            "type": [
+                "number"
+            ]
+        },
+        "ports": {
+            "type": [
+                "string"
+            ]
+        },
+        "env": {
+            "type": [
+                "string"
+            ]
+        },
+        "volumes": {
+            "type": [
+                "Object"
+            ]
+        },
+        "dns": {
+            "type": [
+                "string"
+            ]
+        }
+    },
+    "validations": [],
+    "relations": {
+        "dockerImage": {
+            "type": "belongsTo",
+            "model": "DockerImage",
+            "foreignKey": ""
+        },
+        "networks": {
+            "type": "hasAndBelongsToMany",
+            "model": "Network",
+            "foreignKey": "",
+            "options": {
+                "nestRemoting": true
+            }
+        },
+        "nginxDockerLinks": {
+            "type": "hasMany",
+            "model": "NginxDockerLink",
+            "foreignKey": "",
+            "options": {
+                "nestRemoting": true
+            }
+        }
+    },
+    "acls": [],
+    "methods": {}
+}

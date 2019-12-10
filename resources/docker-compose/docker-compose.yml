@@ -1,0 +1,23 @@
+version: "3"
+services:
+  nginx:
+    image: "nginx-letsencrypt:latest"
+    container_name: psh_nginx
+    restart: always
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - /root/.nginx/conf.d:/etc/nginx/conf.d
+      - /root/.nginx/sites-enabled:/etc/nginx/sites-enabled
+      - /etc/letsencrypt:/etc/letsencrypt
+      - /root/.nginx/auth:/etc/nginx/auth
+      - /root/.nginx/logs:/var/log/nginx
+    networks:
+      - nginx_network
+    extra_hosts:
+      - "dockerhost:${DOCKERHOST}"
+  
+networks:
+  nginx_network:
+    driver: bridge

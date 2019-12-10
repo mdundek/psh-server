@@ -1,0 +1,41 @@
+{
+    "name": "SolutionParameters",
+    "base": "PersistedModel",
+    "idInjection": true,
+    "options": {
+        "validateUpsert": true
+    },
+    "properties": {
+        "volumes": {
+            "type": [
+                "Object"
+            ]
+        },
+        "ports": {
+            "type": [
+                "string"
+            ]
+        }
+    },
+    "validations": [],
+    "relations": {
+        "solution": {
+            "type": "belongsTo",
+            "model": "Solution",
+            "foreignKey": "",
+            "options": {
+                "nestRemoting": true
+            }
+        },
+        "container": {
+            "type": "belongsTo",
+            "model": "Container",
+            "foreignKey": "",
+            "options": {
+                "nestRemoting": true
+            }
+        }
+    },
+    "acls": [],
+    "methods": {}
+}

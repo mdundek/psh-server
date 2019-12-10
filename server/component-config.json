@@ -1,0 +1,1 @@
+{"loopback-component-explorer":{"mountPath":"/explorer","uiDirs":"server/explorer","generateOperationScopedModels":true,"apiInfo":{"title":"SDF API - Swagger","description":"This is the Server Docker Farm API Swagger interface."}}}

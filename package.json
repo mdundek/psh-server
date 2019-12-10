@@ -1,0 +1,59 @@
+{
+  "name": "sdf-server",
+  "version": "1.0.0",
+  "main": "server/server.js",
+  "jest": {
+    "testEnvironment": "node",
+    "transform": {
+      "^.+\\.js$": "<rootDir>/preprocessor.js"
+    },
+    "transformIgnorePatterns": [
+      "node_modules/(?!loopback-boot)"
+    ]
+  },
+  "engines": {
+    "node": ">=4"
+  },
+  "scripts": {
+    "start": "node .",
+    "test": "node_modules/.bin/jest --runInBand",
+    "lint": "eslint . && nsp check"
+  },
+  "dependencies": {
+    "@rauschma/stringio": "^1.4.0",
+    "archiver": "^3.0.0",
+    "async": "^2.6.2",
+    "axios": "^0.18.0",
+    "compression": "^1.0.3",
+    "cors": "^2.5.2",
+    "dotenv": "^6.0.0",
+    "extract-zip": "^1.6.7",
+    "helmet": "^3.10.0",
+    "jsqr": "^1.1.1",
+    "loopback": "^3.19.0",
+    "loopback-boot": "^2.6.5",
+    "loopback-component-explorer": "^6.0.0",
+    "loopback-connector-mysql": "^2.4.1",
+    "moment": "^2.22.2",
+    "multer": "^1.4.1",
+    "nginx-conf": "^1.5.0",
+    "rimraf": "^2.6.3",
+    "serve-favicon": "^2.0.1",
+    "socket.io": "^2.2.0",
+    "strong-error-handler": "^3.0.0",
+    "yaml": "^1.1.0"
+  },
+  "devDependencies": {
+    "eslint": "^3.17.1",
+    "eslint-config-loopback": "^8.0.0",
+    "jest": "^23.6.0",
+    "nsp": "^2.1.0",
+    "supertest": "^3.3.0"
+  },
+  "repository": {
+    "type": "",
+    "url": ""
+  },
+  "license": "UNLICENSED",
+  "description": "sdf-server"
+}

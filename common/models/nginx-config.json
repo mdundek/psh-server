@@ -1,0 +1,69 @@
+{
+    "name": "NginxConfig",
+    "base": "PersistedModel",
+    "idInjection": true,
+    "options": {
+        "validateUpsert": true
+    },
+    "properties": {
+        "name": {
+            "type": "string",
+            "required": true
+        },
+        "uriPath": {
+            "type": "string"
+        },
+        "serverTarget": {
+            "type": "string"
+        },
+        "port": {
+            "type": "string"
+        },
+        "proxyPath": {
+            "type": "string"
+        },
+        "asSubdomain": {
+            "type": "boolean"
+        },
+        "subdomain": {
+            "type": "string"
+        }
+    },
+    "validations": [],
+    "relations": {
+        "domain": {
+            "type": "belongsTo",
+            "model": "Domain",
+            "foreignKey": "",
+            "options": {
+                "nestRemoting": true
+            }
+        },
+        "nginxPresetParams": {
+            "type": "belongsTo",
+            "model": "NginxPresetParams",
+            "foreignKey": "",
+            "options": {
+                "nestRemoting": true
+            }
+        },
+        "basicAuth": {
+            "type": "belongsTo",
+            "model": "BasicAuth",
+            "foreignKey": "",
+            "options": {
+                "nestRemoting": true
+            }
+        },
+        "nginxDockerLinks": {
+            "type": "hasMany",
+            "model": "NginxDockerLink",
+            "foreignKey": "",
+            "options": {
+                "nestRemoting": true
+            }
+        }
+    },
+    "acls": [],
+    "methods": {}
+}

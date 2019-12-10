@@ -1,0 +1,1 @@
+{"name":"Settings","base":"PersistedModel","idInjection":true,"options":{"validateUpsert":true},"properties":{"name":{"type":"string","required":true},"value":{"type":"string"}},"validations":[],"relations":{},"acls":[],"methods":{}}

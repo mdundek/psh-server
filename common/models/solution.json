@@ -1,0 +1,33 @@
+{
+    "name": "Solution",
+    "base": "PersistedModel",
+    "idInjection": true,
+    "options": {
+        "validateUpsert": true
+    },
+    "properties": {
+        "name": {
+            "type": "string",
+            "required": true
+        },
+        "description": {
+            "type": "string"
+        },
+        "alias": {
+            "type": "string"
+        }
+    },
+    "validations": [],
+    "relations": {
+        "solutionParameters": {
+            "type": "hasMany",
+            "model": "SolutionParameters",
+            "foreignKey": "",
+            "options": {
+                "nestRemoting": true
+            }
+        }
+    },
+    "acls": [],
+    "methods": {}
+}

@@ -1,0 +1,22 @@
+{
+    "name": "NginxDockerLink",
+    "base": "PersistedModel",
+    "idInjection": true,
+    "options": {
+        "validateUpsert": true
+    },
+    "properties": {},
+    "validations": [],
+    "relations": {
+        "nginxConfig": {
+            "type": "belongsTo",
+            "model": "NginxConfig",
+            "foreignKey": "",
+            "options": {
+                "nestRemoting": true
+            }
+        }
+    },
+    "acls": [],
+    "methods": {}
+}
