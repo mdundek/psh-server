@@ -5,7 +5,7 @@ PSH is designed to deploy micro service architecture type of applications using 
 
 ## Solutions as packaged configurations
 
-Build solution configurations that package multiple container configurations in order to deploy a complex solution environement. Let's say, you want to run a home media center solution, that runs your Plex server, your movies and series management servers and your download servers. Simply build a "Home Media Server" solution and export that configuration so that you can share this with another person, or rebuild your environement on another machine as a backup. 
+Build solution configurations that package multiple container configurations in order to deploy a complex solution environement. Let's say, you want to run a home media center solution, that runs your Plex server, your movies and series management servers and your download servers. Simply build a "Home Media Server" solution defining what containers and nginx configurations to package, and export that configuration so that you can share this with another person, or rebuild your environement on another machine as a backup. 
 
 ![Solution example](https://raw.githubusercontent.com/mdundek/psh-server/master/resources/images/solution_example.png)
 
