@@ -3,7 +3,10 @@
 PSH is a private cloud solution for home setups. This is not designed to run in a production environement, but serves as a convenient way to host your applications on your home server using Docker, and optionally expose those using NGinx as a reverse proxy.
 PSH is designed to deploy micro service architecture type of applications using Docker, build on top of `docker-compose` as the container configuration and ortchestration engine.
 
+![Solution](https://raw.githubusercontent.com/mdundek/psh-server/master/resources/images/solution.png)
 ![Containers](https://raw.githubusercontent.com/mdundek/psh-server/master/resources/images/containers.png)
+![Nginx](https://raw.githubusercontent.com/mdundek/psh-server/master/resources/images/nginx.png)
+![Solution example](https://raw.githubusercontent.com/mdundek/psh-server/master/resources/images/solution_example.png)
 
 # Install on Ubuntu
 
