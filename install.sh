@@ -185,7 +185,7 @@ else
     # systemctl disable nginx
     
     # Start docker-compose now
-    cd "$PSH_HOME_DIR/.docker-compose/private-server-hub"
+    cd "$PSH_HOME_DIR/.docker-compose"
     rm -rf .env
     echo 'DOCKERHOST='$(ip -4 addr show scope global dev docker0 | grep inet | awk '{print $2}' | cut -d / -f 1) > .env
     docker-compose up -d
