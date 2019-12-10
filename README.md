@@ -47,7 +47,7 @@ Once done, make sure your certificate files are listed under `/etc/letsencrypt/l
 /usr/local/bin/certbot renew
 ```
 
-## Schedule renewal attempt of certificate in chron:
+## Setup auto-renew certificate
 
 Open chron file with `crontab -e`, and add the following line at the end:
 
