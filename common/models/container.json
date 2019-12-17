@@ -43,6 +43,10 @@
             "type": [
                 "string"
             ]
+        },
+        "enabled": {
+            "type": "boolean",
+            "default": true
         }
     },
     "validations": [],

@@ -25,9 +25,16 @@ class SocketPubSub {
             socket.on('deployConfig', this.deployConfig.bind(this, socket));
             socket.on('importSolution', this.importSolution.bind(this, socket));
 
+            socket.on('getContainerStatus', this.getContainerStatus.bind(this, socket));
+
             // ALL => DISCONNECT
             socket.on('disconnect', this.disconnect.bind(this, socket));
         });
+
+        // this.containerScannerInterval = setInterval(() => {
+        //     this.getContainerStatus();
+        // }, 60000);
+        // this.getContainerStatus();
     }
 
     /**
@@ -71,7 +78,11 @@ class SocketPubSub {
                 this.broadcastToClients('deployStatus', data.uid, { message: "Starting containers..." });
                 await DockerCompose.up();
                 this.broadcastToClients('deployStatus', data.uid, { message: "Finalizing..." });
+            
                 setTimeout(function (_data) {
+                    let cStates = await DockerCompose.ps();
+                    this.broadcastToClients("containerStatus", data.uid, { status: 'done', containerStatus: cStates });
+
                     this.broadcastToClients('deployStatus', _data.uid, { status: 'done' });
                 }.bind(this, data), 5000);
             } catch (err) {
@@ -81,10 +92,14 @@ class SocketPubSub {
                     await Nginx.restoreConfig();
                     await DockerCompose.restoreYaml();
                     await DockerCompose.up();
+                    let cStates = await DockerCompose.ps();
                     this.broadcastToClients('deployStatus', data.uid, { status: 'error', message: err ? err.message : "Unknown" });
+                    this.broadcastToClients("containerStatus", data.uid, { status: 'done', containerStatus: cStates });
                 } catch (_err) {
                     console.log("RESTORE ERROR =>", _err);
                     this.broadcastToClients('deployStatus', data.uid, { status: 'error', message: err ? err.message : "Unknown" });
+                    let cStates = await DockerCompose.ps();
+                    this.broadcastToClients("containerStatus", data.uid, { status: 'done', containerStatus: cStates });
                 }
             }
         })();
@@ -104,6 +119,22 @@ class SocketPubSub {
                 this.broadcastToClients('importStatus', data.uid, { status: 'done', hasSubdomains: subdomainsFound });
             } catch (err) {
                 this.broadcastToClients('importStatus', data.uid, { status: 'error' });
+            }
+        })();
+    }
+
+    /**
+     * getContainerStatus
+     * @param {*} socket 
+     * @param {*} data 
+     */
+    static getContainerStatus(socket, data) {
+        (async () => {
+            try {
+                let containerStatus = await DockerCompose.ps();
+                this.broadcastToClients('containerStatus', data.uid, { status: 'done', containerStatus: containerStatus });
+            } catch (err) {
+                this.broadcastToClients('containerStatus', data.uid, { status: 'error' });
             }
         })();
     }
@@ -132,5 +163,7 @@ class SocketPubSub {
 }
 SocketPubSub.io = null
 SocketPubSub.cmSocketConnections = [];
+
+SocketPubSub.containerScannerInterval = null;
 
 module.exports = SocketPubSub;

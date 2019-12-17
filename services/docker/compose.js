@@ -34,6 +34,9 @@ class ComposeService {
         let yamlDoc = YAML.parse(yamlFileContent);
 
         let containers = await LoopbackTools.asyncCall(this.models.Container, "find", {
+            "where": {
+                "enabled": true
+            },
             "include": ["networks", "dockerImage"]
         });
 
@@ -42,12 +45,14 @@ class ComposeService {
             if (containers[i].volumes.length > 0) {
                 for (let y = 0; y < containers[i].volumes.length; y++) {
                     if (containers[i].volumes[y].git.length > 0) {
+
                         if (!fs.existsSync(containers[i].volumes[y].hostPath)) {
                             fs.mkdirSync(containers[i].volumes[y].hostPath, { recursive: true });
                         }
-
+                        let cloned = false;
                         if (!fs.existsSync(path.join(containers[i].volumes[y].hostPath, ".git"))) {
                             broadcastMsg("Cloning GIT...");
+                            cloned = true;
                             try {
                                 await this._spawn('git', ['clone', containers[i].volumes[y].git, "."], containers[i].volumes[y].hostPath);
                             } catch (err) {
@@ -64,7 +69,7 @@ class ComposeService {
                             }
                         }
 
-                        if (containers[i].volumes[y].execOnEveryDeploy && containers[i].volumes[y].cmd.length > 0) {
+                        if ((cloned || containers[i].volumes[y].execOnEveryDeploy) && containers[i].volumes[y].cmd.length > 0) {
                             try {
                                 broadcastMsg(`Executing command:  ${containers[i].volumes[y].cmd}...`);
 
@@ -86,6 +91,7 @@ class ComposeService {
         let nginxDependsOn = [];
         containers.forEach((c => {
             c = c.toJSON();
+
             nginxDependsOn.push(c.name);
             yamlDoc.services[c.name] = {
                 "image": c.dockerImage.name + (c.dockerImage.version.length > 0 ? ":" + c.dockerImage.version : ""),
@@ -192,6 +198,192 @@ class ComposeService {
     }
 
     /**
+     * ps
+     */
+    static async ps() {
+        let composeFilePath = await LoopbackTools.asyncCall(this.models.Settings, "findOne", {
+            "where": {
+                "name": "composeConfigPath"
+            }
+        });
+        if (!composeFilePath || !composeFilePath.value || composeFilePath.value.length == 0) {
+            throw new Error("Settings not defined: composeConfigPath");
+        }
+        
+        console.log("=> docker-compose ps...");
+        // if (Env.get("RUNTIME_ENV") == "prod") {
+            try {
+                let output = await this._spawnData('docker-compose', ['ps'], path.dirname(composeFilePath.value));
+                this.status = output.split("\n").filter((o, i) => {
+                    return i > 1 && o.length > 0;
+                })
+                .map(o => o.split("  ").map(a => a.trim()))
+                .map(o => { return {
+                    "name": o[0],
+                    "state": o[2].toUpperCase()
+                }});  
+                return this.status;       
+            } catch (err) {
+                console.log("ERROR =>", err);
+                this.status = [];
+                throw err;
+            }
+        // } else {
+        //     console.log("=> DEV mode, docker-compose ps stubbed");
+        // }
+    }
+
+
+
+
+
+
+
+
+
+
+    /**
+     * stop
+     */
+    static async stop(cId) {
+        let composeFilePath = await LoopbackTools.asyncCall(this.models.Settings, "findOne", {
+            "where": {
+                "name": "composeConfigPath"
+            }
+        });
+        if (!composeFilePath || !composeFilePath.value || composeFilePath.value.length == 0) {
+            throw new Error("Settings not defined: composeConfigPath");
+        }
+        
+        console.log("=> docker-compose stop...");
+        // if (Env.get("RUNTIME_ENV") == "prod") {
+            try {
+                let container = await LoopbackTools.asyncCall(this.models.Container, "findOne", {
+                    "where": {
+                        "id": cId
+                    }
+                });
+                await this._spawn('docker-compose', ['stop', container.name], path.dirname(composeFilePath.value));
+
+                // let cStates = await this.ps();
+                
+            } catch (err) {
+                console.log("ERROR =>", err);
+                this.status = [];
+
+                // let cStates = await this.ps();
+                // SocketPubSub.broadcastToClients("containerStatus", uId, { status: 'done', containerStatus: cStates });
+
+                throw err;
+            }
+        // } else {
+        //     console.log("=> DEV mode, docker-compose ps stubbed");
+        // }
+    }
+
+
+
+
+
+
+
+
+
+
+    /**
+     * start
+     */
+    static async start(cId) {
+        let composeFilePath = await LoopbackTools.asyncCall(this.models.Settings, "findOne", {
+            "where": {
+                "name": "composeConfigPath"
+            }
+        });
+        if (!composeFilePath || !composeFilePath.value || composeFilePath.value.length == 0) {
+            throw new Error("Settings not defined: composeConfigPath");
+        }
+        
+        console.log("=> docker-compose start...");
+        // if (Env.get("RUNTIME_ENV") == "prod") {
+            try {
+                let container = await LoopbackTools.asyncCall(this.models.Container, "findOne", {
+                    "where": {
+                        "id": cId
+                    }
+                });
+                await this._spawn('docker-compose', ['start', container.name], path.dirname(composeFilePath.value));
+
+                // let cStates = await this.ps();
+                // SocketPubSub.broadcastToClients("containerStatus", uId, { status: 'done', containerStatus: cStates });
+            } catch (err) {
+                console.log("ERROR =>", err);
+                this.status = [];
+
+                // let cStates = await this.ps();
+                // SocketPubSub.broadcastToClients("containerStatus", uId, { status: 'done', containerStatus: cStates });
+
+                throw err;
+            }
+        // } else {
+        //     console.log("=> DEV mode, docker-compose ps stubbed");
+        // }
+    }
+
+
+
+
+
+
+
+
+
+
+    /**
+     * restart
+     */
+    static async restart(cId) {
+        let composeFilePath = await LoopbackTools.asyncCall(this.models.Settings, "findOne", {
+            "where": {
+                "name": "composeConfigPath"
+            }
+        });
+        if (!composeFilePath || !composeFilePath.value || composeFilePath.value.length == 0) {
+            throw new Error("Settings not defined: composeConfigPath");
+        }
+        
+        console.log("=> docker-compose restart...");
+        // if (Env.get("RUNTIME_ENV") == "prod") {
+            try {
+                let container = await LoopbackTools.asyncCall(this.models.Container, "findOne", {
+                    "where": {
+                        "id": cId
+                    }
+                });
+                await this._spawn('docker-compose', ['restart', container.name], path.dirname(composeFilePath.value));
+
+                // let cStates = await this.ps();
+                // SocketPubSub.broadcastToClients("containerStatus", uId, { status: 'done', containerStatus: cStates });
+            } catch (err) {
+                console.log("ERROR =>", err);
+                this.status = [];
+
+                // let cStates = await this.ps();
+                // SocketPubSub.broadcastToClients("containerStatus", uId, { status: 'done', containerStatus: cStates });
+
+                throw err;
+            }
+        // } else {
+        //     console.log("=> DEV mode, docker-compose ps stubbed");
+        // }
+    }
+
+
+
+
+
+
+
+    /**
      * down
      */
     static async down() {
@@ -210,6 +402,7 @@ class ComposeService {
             } catch (err) {
                 console.log("ERROR =>", err);
             }
+            // await this.ps();
         } else {
             console.log("=> DEV mode, docker-compose down stubbed");
         }
@@ -265,23 +458,25 @@ class ComposeService {
 
                     // Set up interval to probe server
                     let interval = setInterval(() => {
-                        instance.get(pingUrl)
-                            .then(response => {
+                        (async() => {
+                            try{
+                                let response = await instance.get(pingUrl);
                                 successCounts++;
                                 if (successCounts >= 5) {
                                     clearInterval(interval);
+                                    // await this.ps();
                                     resolve();
                                 }
-                            })
-                            .catch(error => {
+                            } catch (error) {
                                 successCounts = 0;
                                 if (moment().subtract(60, "seconds").isAfter(scanStart)) {
                                     clearInterval(interval);
-
+                                    // await this.ps();
                                     // resolve();
                                     reject(new Error("Could not start server, please check your configuration"));
                                 }
-                            });
+                            }
+                        })();
                     }, 2000);
                 } else {
                     console.log("=> DEV mode, docker-compose up stubbed");
@@ -321,9 +516,9 @@ class ComposeService {
                 } : {}
             );
 
-            child.stdout.on('data', (data) => {
-                console.log(`${data}`);
-            });
+            // child.stdout.on('data', (data) => {
+            //     console.log(`${data}`);
+            // });
 
             child.stderr.on('data', (data) => {
                 console.log(`${data}`);
@@ -332,6 +527,38 @@ class ComposeService {
             child.on('close', (code) => {
                 if (code == 0) {
                     resolve();
+                } else {
+                    reject();
+                }
+            });
+        });
+    }
+
+    /**
+     * _spawnData
+     */
+    static _spawnData(cmd, params, workingDirectory) {
+        return new Promise((resolve, reject) => {
+            let outData = "";
+            const child = spawn(
+                cmd,
+                params ? params : [],
+                workingDirectory ? {
+                    cwd: workingDirectory
+                } : {}
+            );
+
+            child.stdout.on('data', (data) => {
+                outData += data;
+            });
+
+            child.stderr.on('data', (data) => {
+                console.log(`${data}`);
+            });
+
+            child.on('close', (code) => {
+                if (code == 0) {
+                    resolve(outData);
                 } else {
                     reject();
                 }
@@ -353,4 +580,5 @@ class ComposeService {
 }
 
 ComposeService.models = null;
+ComposeService.status = [];
 module.exports = ComposeService;

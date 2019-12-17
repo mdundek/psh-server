@@ -21,3 +21,4 @@ resources/nginx/_default.conf
 sdf-db.json
 env.dev.json
 .env
+test_data
