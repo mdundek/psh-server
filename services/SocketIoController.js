@@ -80,9 +80,11 @@ class SocketPubSub {
                 this.broadcastToClients('deployStatus', data.uid, { message: "Finalizing..." });
             
                 setTimeout(function (_data) {
-                    let cStates = await DockerCompose.ps();
-                    this.broadcastToClients("containerStatus", data.uid, { status: 'done', containerStatus: cStates });
-
+                    DockerCompose.ps().then((cStates) => {
+                        this.broadcastToClients("containerStatus", data.uid, { status: 'done', containerStatus: cStates });
+                    }).catch((err) => {
+                        console.log("Could not get container status");
+                    });
                     this.broadcastToClients('deployStatus', _data.uid, { status: 'done' });
                 }.bind(this, data), 5000);
             } catch (err) {

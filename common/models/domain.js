@@ -7,7 +7,7 @@ var rimraf = require("rimraf");
 const Env = require("../../lib/env");
 var app = require('../../server/server');
 
-let LETSENCRYPT_SSL_DIR = Env.get("RUNTIME_ENV") == "prod" ? "/etc/letsencrypt" : "";
+let LETSENCRYPT_SSL_DIR = Env.get("RUNTIME_ENV") == "prod" ? "/usr/local/private-server-hub/.letsencrypt" : "";
 
 /**
  * asyncForEach

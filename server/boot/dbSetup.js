@@ -1,8 +1,41 @@
 "use strict";
 
 let async = require("async");
+const { spawn } = require('child_process');
 const Env = require("../../lib/env.js");
 const LoopbackTools = require("../../common/loopback-model-tools");
+
+/**
+ * _spawnData
+ */
+let _spawnData = (cmd, params, workingDirectory) => {
+    return new Promise((resolve, reject) => {
+        let outData = "";
+        const child = spawn(
+            cmd,
+            params ? params : [],
+            workingDirectory ? {
+                cwd: workingDirectory
+            } : {}
+        );
+
+        child.stdout.on('data', (data) => {
+            outData += data;
+        });
+
+        child.stderr.on('data', (data) => {
+            console.log(`${data}`);
+        });
+
+        child.on('close', (code) => {
+            if (code == 0) {
+                resolve(outData);
+            } else {
+                reject();
+            }
+        });
+    });
+}
 
 module.exports = function (server) {
 
@@ -24,8 +57,27 @@ module.exports = function (server) {
                 done(null, adminUser);
             });
         },
-        // Create admin Users
+        // Create default domain
         (adminUser, done) => {
+            if (adminUser == null) {
+                (async() => {
+                    let extIp = await _spawnData("curl", ["-4", "ifconfig.co"]);
+                    server.models.Domain.create([
+                        {"value":extIp.replace(/^\s+|\s+$/g, ''), "httpsEnabled":false}
+                    ], function (err, defaultDomain) {
+                        if (err) {
+                            done(err);
+                            return;
+                        }
+                        done(null, adminUser, defaultDomain[0]);
+                    });
+                })();
+            } else {
+                done(null, adminUser, null);
+            }
+        },
+        // Create admin Users
+        (adminUser, defaultDomain, done) => {
             if (adminUser == null) {
                 server.models.SdfUser.create([
                     Object.assign({ "realm": "admin" }, Env.get("BASE_USERS").adminUser)
@@ -53,23 +105,33 @@ module.exports = function (server) {
                                 done(err);
                                 return;
                             }
-                            done(null, adminUser);
+                            done(null, adminUser, defaultDomain);
                         });
                     });
                 });
             } else {
-                done(null, adminUser);
+                done(null, adminUser, defaultDomain);
             }
         },
         // Create settings
-        (adminUser, done) => {
+        (adminUser, defaultDomain, done) => {
             server.models.Settings.find({}, (err, settings) => {
                 if (err) {
                     done(err);
                     return;
                 }
                 if (settings.length == 0) {
-                    server.models.Settings.create(Env.get("INITIAL_SETTINGS"), function (err) {
+                    let _settings = Env.get("INITIAL_SETTINGS");
+                    if(defaultDomain){
+                        _settings = _settings.map((o) => {
+                            if(o.name == "defaultNginxDomain") {
+                                o.value = defaultDomain.value;
+                            }
+                            return o;
+                        });
+                    }
+
+                    server.models.Settings.create(_settings, function (err) {
                         if (err) {
                             done(err);
                             return;

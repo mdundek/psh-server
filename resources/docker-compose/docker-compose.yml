@@ -1,7 +1,7 @@
 version: "3"
 services:
   nginx:
-    image: "nginx-letsencrypt:latest"
+    image: "psh_nginx:latest"
     container_name: psh_nginx
     restart: always
     ports:
@@ -10,7 +10,7 @@ services:
     volumes:
       - /usr/local/private-server-hub/.nginx/conf.d:/etc/nginx/conf.d
       - /usr/local/private-server-hub/.nginx/sites-enabled:/etc/nginx/sites-enabled
-      - /etc/letsencrypt:/etc/letsencrypt
+      - /usr/local/private-server-hub/.letsencrypt:/etc/letsencrypt
       - /usr/local/private-server-hub/.nginx/auth:/etc/nginx/auth
       - /usr/local/private-server-hub/.nginx/logs:/var/log/nginx
     networks:

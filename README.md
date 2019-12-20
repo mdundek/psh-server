@@ -26,20 +26,20 @@ Configure your NGinx reverse proxy to expose your docker container servers, or a
 ![Nginx edit](https://raw.githubusercontent.com/mdundek/psh-server/master/resources/images/nginx_edit.png)
 
 
-# Install on Ubuntu
+# Install
 
 ```
 sudo curl https://raw.githubusercontent.com/mdundek/psh-server/master/install.sh | sudo bash
 ```
 
-# SSL Certificate
+<!-- # SSL Certificate
 
 ## Generate certificate
 
 First, generate your wildcard certificate using certbot. Follow the instructions on this blog:
 https://medium.com/@saurabh6790/generate-wildcard-ssl-certificate-using-lets-encrypt-certbot-273e432794d7
 
-Once done, make sure your certificate files are listed under `/etc/letsencrypt/live/<your domain>/`.
+Once done, make sure your certificate files are listed under `/usr/local/private-server-hub/.letsencrypt/live/<your domain>/`.
 
 ## Test renewal
 
@@ -53,4 +53,4 @@ Open chron file with `crontab -e`, and add the following line at the end:
 
 ```
 14 5 * * * /usr/local/bin/certbot renew --quiet --post-hook "docker container exec psh_nginx nginx -s reload" > /dev/null 2>&1
-```
+``` -->
