@@ -268,6 +268,12 @@ elif [[ "$DISTRO" == *"redhat"*] || ["$DISTRO" == *"centos"* ]]; then
     fi
     sleep 3
 
+    if [ -x "$(command -v firewall-cmd)" ]; then
+        firewall-cmd --zone=public --add-port=80/tcp
+        firewall-cmd --zone=public --add-port=443/tcp
+        firewall-cmd --zone=public --add-port=16199/tcp
+    fi
+
     # *****************************************************************************
     # ********************************* NODEJS ************************************
     # *****************************************************************************
