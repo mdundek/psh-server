@@ -387,6 +387,8 @@ elif [[ "$DISTRO" == *"redhat"*] || ["$DISTRO" == *"centos"* ]]; then
         echo "------------------ => Installing Docker Compose..."
         # Install docker compose
         curl -L https://github.com/docker/compose/releases/download/1.25.0/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
+        mv /usr/local/bin/docker-compose /usr/bin/docker-compose
+        chmod +x /usr/bin/docker-compose
         if [ $? -ne 0 ]; then
             echo "=> An error occured, aboarding installation"
             exit 1
@@ -394,7 +396,6 @@ elif [[ "$DISTRO" == *"redhat"*] || ["$DISTRO" == *"centos"* ]]; then
         sleep 1
     fi
 
-    chmod +x /usr/local/bin/docker-compose
     chmod +x $PSH_HOME_DIR/resources/populateDockerHostIp.sh
 
     mkdir -p $PSH_HOME_DIR/.docker-compose
