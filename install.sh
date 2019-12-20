@@ -319,7 +319,6 @@ elif [[ "$DISTRO" == *"redhat"*] || ["$DISTRO" == *"centos"* ]]; then
             dnf install docker-ce --nobest -y
         fi
 
-        yum install -y docker.io
         if [ $? -ne 0 ]; then
             echo "=> An error occured, aboarding installation"
             exit 1
