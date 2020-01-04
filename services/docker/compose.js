@@ -217,9 +217,8 @@ class ComposeService {
                 this.status = output.split("\n").filter((o, i) => {
                     return i > 1 && o.length > 0;
                 })
-                .map(o => o.split("  ").map(a => a.trim()))
-                .filter(o => o.length > 0);
-
+                .map(    o => o.split("  ").map(a => a.trim()).filter(b => b.length > 0)    )
+                
                 console.log(this.status);
 
 
