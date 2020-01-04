@@ -217,21 +217,11 @@ class ComposeService {
                 this.status = output.split("\n").filter((o, i) => {
                     return i > 1 && o.length > 0;
                 })
-                .map(    o => o.split("  ").map(a => a.trim()).filter(b => b.length > 0)    )
-                
-                console.log(this.status);
-
-
-                this.status = this.status.map(o => { return {
+                .map(o => o.split("  ").map(a => a.trim()).filter(b => b.length > 0))
+                .map(o => { return {
                     "name": o[0],
-                    "state": o[2].toUpperCase()
+                    "state": o[2].replace(/ *\([^)]*\) */g, "").toUpperCase()
                 }});  
-
-
-
-
-
-                
                 return this.status;       
             } catch (err) {
                 console.log("ERROR =>", err);
@@ -242,15 +232,6 @@ class ComposeService {
         //     console.log("=> DEV mode, docker-compose ps stubbed");
         // }
     }
-
-
-
-
-
-
-
-
-
 
     /**
      * stop
