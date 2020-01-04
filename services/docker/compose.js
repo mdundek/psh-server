@@ -217,7 +217,12 @@ class ComposeService {
                 this.status = output.split("\n").filter((o, i) => {
                     return i > 1 && o.length > 0;
                 })
-                .map(o => o.split("  ").map(a => a.trim()))
+                .map(o => {
+                    console.log(o);
+                    console.log(o.split("  "));
+                    console.log("---------------------");
+                    return o.split("  ").map(a => a.trim());
+                })
                 .map(o => { return {
                     "name": o[0],
                     "state": o[2].toUpperCase()
