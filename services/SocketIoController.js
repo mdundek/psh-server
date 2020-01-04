@@ -66,9 +66,9 @@ class SocketPubSub {
 
                 this.broadcastToClients('deployStatus', data.uid, { message: "Stopping containers..." });
                 await DockerCompose.down();
-                // await DockerCompose.generateYaml(function (_data, msg) {
-                //     this.broadcastToClients('deployStatus', _data.uid, { message: msg });
-                // }.bind(this, data));
+                await DockerCompose.generateYaml(function (_data, msg) {
+                    this.broadcastToClients('deployStatus', _data.uid, { message: msg });
+                }.bind(this, data));
                 await Nginx.generateConfig(function (_data, msg) {
                     this.broadcastToClients('deployStatus', _data.uid, { message: msg });
                 }.bind(this, data));

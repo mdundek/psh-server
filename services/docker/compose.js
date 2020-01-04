@@ -165,6 +165,13 @@ class ComposeService {
             }
             fs.renameSync(composeFilePath.value, composeFilePath.value + ".backup");
         }
+
+
+
+        console.log("=====>", composeFilePath.value);
+        console.log("=====>", YAML.stringify(yamlDoc));
+
+
         // Save content to config file
         fs.writeFileSync(composeFilePath.value, YAML.stringify(yamlDoc));
     }
