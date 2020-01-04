@@ -223,6 +223,7 @@ class ComposeService {
                     "name": o[0],
                     "state": o[2].toUpperCase()
                 }});  
+                console.log(this.status);
                 return this.status;       
             } catch (err) {
                 console.log("ERROR =>", err);
