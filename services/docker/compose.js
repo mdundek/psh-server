@@ -90,8 +90,6 @@ class ComposeService {
         let networks = [];
         let nginxDependsOn = [];
 
-        console.log("=====>", containers);
-        
         containers.forEach((c => {
             c = c.toJSON();
 
