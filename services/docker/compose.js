@@ -218,12 +218,21 @@ class ComposeService {
                     return i > 1 && o.length > 0;
                 })
                 .map(o => o.split("  ").map(a => a.trim()))
-                .filter(o => o.length > 0)
-                .map(o => { return {
+                .filter(o => o.length > 0);
+
+                console.log(this.status);
+
+
+                this.status = this.status.map(o => { return {
                     "name": o[0],
                     "state": o[2].toUpperCase()
                 }});  
-                console.log(this.status);
+
+
+
+
+
+                
                 return this.status;       
             } catch (err) {
                 console.log("ERROR =>", err);
