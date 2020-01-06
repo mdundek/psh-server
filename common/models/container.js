@@ -42,7 +42,7 @@ module.exports = function (Container) {
                 console.log(err);
                 cb(null, {
                     success: false,
-                    error: err.message
+                    error: err ? err.message : "Could not start container"
                 });
             }
         })();
@@ -80,7 +80,7 @@ module.exports = function (Container) {
                 console.log(err);
                 cb(null, {
                     success: false,
-                    error: err.message
+                    error: err ? err.message : "Could not start container"
                 });
                 let cStates = await DockerCompose.ps();
                 SocketPubSub.broadcastToClients("containerStatus", data.uid, { status: 'done', containerStatus: cStates });
@@ -120,7 +120,7 @@ module.exports = function (Container) {
                 console.log(err);
                 cb(null, {
                     success: false,
-                    error: err.message
+                    error: err ? err.message : "Could not start container"
                 });
                 let cStates = await DockerCompose.ps();
                 SocketPubSub.broadcastToClients("containerStatus", data.uid, { status: 'done', containerStatus: cStates });
@@ -160,7 +160,7 @@ module.exports = function (Container) {
                 console.log(err);
                 cb(null, {
                     success: false,
-                    error: err.message
+                    error: err ? err.message : "Could not start container"
                 });
                 let cStates = await DockerCompose.ps();
                 SocketPubSub.broadcastToClients("containerStatus", data.uid, { status: 'done', containerStatus: cStates });
