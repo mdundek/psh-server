@@ -8,19 +8,19 @@ self.__precacheManifest = [
     "url": "/psh-admin/static/js/runtime~main.78d9c6be.js"
   },
   {
-    "revision": "4159738ad81d6b7f8e00",
-    "url": "/psh-admin/static/js/main.4159738a.chunk.js"
+    "revision": "24d884cb261f7a65d4c4",
+    "url": "/psh-admin/static/js/main.24d884cb.chunk.js"
   },
   {
     "revision": "5a23cc8a5e568481c43c",
     "url": "/psh-admin/static/js/1.5a23cc8a.chunk.js"
   },
   {
-    "revision": "4159738ad81d6b7f8e00",
+    "revision": "24d884cb261f7a65d4c4",
     "url": "/psh-admin/static/css/main.bd7ca0ca.chunk.css"
   },
   {
-    "revision": "e8e354a942cfb5d93836a1c6fd6a135b",
+    "revision": "2a8f0eca76a96f645aefdf65a3f0e35e",
     "url": "/psh-admin/index.html"
   }
 ];
