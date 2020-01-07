@@ -1,14 +1,14 @@
 {
   "main.css": "/psh-admin/static/css/main.bd7ca0ca.chunk.css",
-  "main.js": "/psh-admin/static/js/main.3cf9643b.chunk.js",
-  "main.js.map": "/psh-admin/static/js/main.3cf9643b.chunk.js.map",
-  "static/js/1.2b4dd03c.chunk.js": "/psh-admin/static/js/1.2b4dd03c.chunk.js",
-  "static/js/1.2b4dd03c.chunk.js.map": "/psh-admin/static/js/1.2b4dd03c.chunk.js.map",
+  "main.js": "/psh-admin/static/js/main.4159738a.chunk.js",
+  "main.js.map": "/psh-admin/static/js/main.4159738a.chunk.js.map",
+  "static/js/1.5a23cc8a.chunk.js": "/psh-admin/static/js/1.5a23cc8a.chunk.js",
+  "static/js/1.5a23cc8a.chunk.js.map": "/psh-admin/static/js/1.5a23cc8a.chunk.js.map",
   "runtime~main.js": "/psh-admin/static/js/runtime~main.78d9c6be.js",
   "runtime~main.js.map": "/psh-admin/static/js/runtime~main.78d9c6be.js.map",
   "static/media/logo.svg": "/psh-admin/static/media/logo.5d5d9eef.svg",
   "static/css/main.bd7ca0ca.chunk.css.map": "/psh-admin/static/css/main.bd7ca0ca.chunk.css.map",
   "index.html": "/psh-admin/index.html",
-  "precache-manifest.f40d67c8a6b5585b1d9fe7fc84461756.js": "/psh-admin/precache-manifest.f40d67c8a6b5585b1d9fe7fc84461756.js",
+  "precache-manifest.3e2a0906bf6d10cb1bcf52402b4594cd.js": "/psh-admin/precache-manifest.3e2a0906bf6d10cb1bcf52402b4594cd.js",
   "service-worker.js": "/psh-admin/service-worker.js"
 }

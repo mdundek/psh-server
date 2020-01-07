@@ -67,6 +67,15 @@ class NginxService {
             }
         }
 
+        // Make sure an nginx config is not backed by only disabled containers, if so filter them out
+        nginxConfigs = nginxConfigs.filter((ngxc) => {
+            if (ngxc.serverTarget == 'c') {
+                return ngxc.containers.filter(c => c.enabled).length > 0;
+            } else {
+                return true;
+            }
+        });
+
         let config = await this.prepareConfigFile();
 
         // Default domain first
@@ -283,10 +292,12 @@ class NginxService {
         targetLocation._add('proxy_bind', '$server_addr');
 
         if (ngxc.serverTarget == 'c') {
-            if (ngxc.containers.length > 0) {
+            if (ngxc.containers.filter(c => c.enabled).length > 0) {
                 configRoot.nginx._add('upstream', ngxc.name);
                 ngxc.containers.forEach(container => {
-                    configRoot.nginx.upstream[configRoot.nginx.upstream.length - 1]._add('server', `${container.name}:${ngxc.port}`);
+                    if(container.enabled){
+                        configRoot.nginx.upstream[configRoot.nginx.upstream.length - 1]._add('server', `${container.name}:${ngxc.port}`);
+                    }
                 });
             }
         } else if (ngxc.serverTarget == 'h') {
