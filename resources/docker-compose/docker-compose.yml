@@ -4,6 +4,11 @@ services:
     image: "psh_nginx:latest"
     container_name: psh_nginx
     restart: always
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "500k"
+        max-file: "10"
     ports:
       - 80:80
       - 443:443

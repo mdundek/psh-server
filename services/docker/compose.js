@@ -96,7 +96,14 @@ class ComposeService {
             nginxDependsOn.push(c.name);
             yamlDoc.services[c.name] = {
                 "image": c.dockerImage.name + (c.dockerImage.version.length > 0 ? ":" + c.dockerImage.version : ""),
-                "restart": "always"
+                "restart": "always",
+                "logging": {
+                    "driver": "json-file",
+                    "options": {
+                        "max-size": "500k",
+                        "max-file": "10"
+                    }
+                }
             };
 
             yamlDoc.services[c.name].container_name = "psh_" + c.name;
