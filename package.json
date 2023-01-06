@@ -46,7 +46,7 @@
   "devDependencies": {
     "eslint": "^3.17.1",
     "eslint-config-loopback": "^8.0.0",
-    "jest": "^23.6.0",
+    "jest": "^29.3.1",
     "nsp": "^2.1.0",
     "supertest": "^3.3.0"
   },
